@@ -1,0 +1,207 @@
+{
+  "name": "Treasure Jungle",
+  "meta": {
+    "author": "Chang Hongzheng, Bradley Koenen, and Stephen Yang",
+    "tagline": "Anoter simple text based adventure game written in JS",
+    "welcome": "Welcome to Treasure Jungle - a pilot written to test and improve the text based adventure game engine written in Javascript. The aim of the game is to find the treasure and leave the maze."
+  },
+  "rooms": [{
+    "room1": {
+      "alias": "Start Camp",
+      "description": "You are at the camp set up by you and your partner on the edge of a jungle rumored to hold hidden jewels.",
+      "contextualHelp": "Gather the items you brought before you begin the hunt.",
+      "actions": {
+        "look around": "On the table, you see a flashlight lying as a paperweight over the map. Leaning against a chair are a shovel and a machete.",
+        "pick map": "You take and roll up the map your partner found earlier. It claims jewels at 2 different locations.",
+        "pick machete": "You pick up the machete.",
+        "pick shovel": "You pick up the shovel, or rather, the shovel/pick tool. It's like a Swiss army knife, designed specifically for treasure hunting.",
+        "pick flashlight": "You pick up the flashlight."
+      },
+      "exits": {
+        "north": "room2",
+        "east": "-1",
+        "south": "room5",
+        "west": "-1"
+      },
+      "objects": {
+        "map": {
+          "actions": "use map"
+        },
+        "machete": {
+          "actions": "use machete"
+        },
+        "shovel": {
+          "actions": "use shovel"
+        },
+        "flashlight": {
+          "actions": "use flashlight"
+        }
+      },
+      "enemies": null
+    }
+  }, {
+    "room2": {
+      "alias": "Jungle Start",
+      "description": "You arrive at what appears to be the start of the map, marked by a peculiar looking ...fern? A thick layer of vines lie to the east.",
+      "contextualHelp": "Why else did you bring the machete? What machete? Don't tell me you left it back at camp.",
+      "actions": {
+        "use machete": "You cut through the vines with ease. They are no match for your expert swordsmanship."
+      },
+      "exits": {
+        "north": "room6",
+        "east": "room2",
+        "south": "room1",
+        "west": "-1"
+      },
+      "objects": null,
+      "enemies": null
+    }
+  }, {
+    "room3": {
+      "alias": "Jungle",
+      "description": "There are trees and all sorts of unfamiliar vegetation all around you.",
+      "contextualHelp": "In the jungle, the mighty jungle... ",
+      "actions": null,
+      "exits": {
+        "north": "room3",
+        "east": "room3",
+        "south": "room3",
+        "west": "room1"
+      },
+      "objects": null,
+      "enemies": null
+    }
+  }, {
+    "room4": {
+      "alias": "Jungle",
+      "description": "Tall trees are all around you. A gentle breeze blows from the south.",
+      "contextualHelp": "Neither you nor you partner has photographic memory. Did you bring the map with you?",
+      "actions": {
+        "use map": "There should be a river nearby."
+      },
+      "exits": {
+        "north": "-1",
+        "east": "-1",
+        "south": "room9",
+        "west": "room1"
+      },
+      "objects": null,
+      "enemies": null
+    }
+  }, {
+    "room5": {
+      "alias": "Jungle",
+      "description": "You come across an unfamiliar creature chewing on some leaves. Your first animal encounter in this jungle, and it looks like... a dinosaur!?",
+      "contextualHelp": "Too bad you didn't bring a camera. The dinosaur doesn't react to your arrival ...yet.",
+      "actions": {
+        "use map": "There should be a cave nearby."
+      },
+      "exits": {
+        "north": "room1",
+        "east": "room9",
+        "south": "room4",
+        "west": "room10"
+      },
+      "objects": {
+        "jewel": { 
+          "actions": null
+        }
+      },
+      "enemies": {
+        "dinosaur": {
+          "actions": null
+        }
+      }
+    }
+  }, {
+    "room6": {
+      "alias": "Cave Entrance",
+      "description": "You have reached the entrance of a cave. A cave in a treasure hunt! What will they think of next?",
+      "contextualHelp": "You might want to shine a light into the cave before entering... unless you left the flashlight back at camp.",
+      "actions": {
+        "use flashlight": "There's nothing ominous as far as you can see into the cave... well, nothing more ominous than caves in general."
+      },
+      "exits": {
+        "north": "room7",
+        "east": "-1",
+        "south": "room2",
+        "west": "-1"
+      },
+      "objects": null,
+      "enemies": null
+    }
+  }, {
+    "room7": {
+      "alias": "Cave",
+      "description": "You make some ways into the cave.",
+      "contextualHelp": "Darkness prevents you from seeing much here.",
+      "actions": {
+        "use flashlight" : "Unfortunately, there's not much here beyond stalagmites and stalagtites."
+      },
+      "exits": {
+        "north": "-1",
+        "east": "room8",
+        "south": "room6",
+        "west": "-1"
+      },
+      "objects": null,
+      "enemies": null
+    }
+  }, {
+    "room8": {
+      "alias": "Cave",
+      "description": "It looks like this is as far as the cave goes.",
+      "contextualHelp": "Darkness prevents you from noticing too much here.",
+      "actions": {
+        "use flashlight": "Something glares back at you the moment your light hits it. Thankfully, it is the glare of not an angry animal, but a jewel's reflective surface.",
+        "use shovel": "With your trusty shovel tool, you dig out the gem in no time!",
+        "pick jewel" : "Huzzah! You have found a gem! Your partner gives you an epic brofist."
+      },
+      "exits": {
+        "north": "-1",
+        "east": "-1",
+        "south": "-1",
+        "west": "room7"
+      },
+      "objects": {
+        "jewel": { 
+          "actions": null
+        }
+      },
+      "enemies": null
+    }
+  }, {
+    "room9": {
+      "alias": "River",
+      "description": "You are standing on the banks of a flowing river.",
+      "contextualHelp": "That's how the jungle exists. Don't you just love nature?",
+      "actions": {
+        "drink water": "Are you sure that's a good idea?"
+      },
+      "exits": {
+        "north": "room4",
+        "east": "-1",
+        "south": "room9",
+        "west": "-1"
+      },
+      "objects": null,
+      "enemies": null
+    }
+  }, {
+    "room10": {
+      "alias": "Exit",
+      "description": "You are at the end of the demo. Thanks for playing Treasure Jungle!",
+      "contextualHelp": "",
+      "actions": null,
+      "isExitRoom" : "true",
+      "exits": {
+        "north": "-1",
+        "east": "-1",
+        "south": "-1",
+        "west": "-1"
+      },
+      "objects": null,
+      "enemies": null
+    }
+  }]
+}
