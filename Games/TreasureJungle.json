@@ -3,7 +3,7 @@
   "meta": {
     "author": "Chang Hongzheng, Bradley Koenen, and Stephen Yang",
     "tagline": "Anoter simple text based adventure game written in JS",
-    "welcome": "Welcome to Treasure Jungle - a pilot written to test and improve the text based adventure game engine written in Javascript. The aim of the game is to find the treasure and leave the maze."
+    "welcome": "Welcome to Treasure Jungle, a demo game where the aim is to find the treasure and leave the jungle."
   },
   "rooms": [{
     "room1": {

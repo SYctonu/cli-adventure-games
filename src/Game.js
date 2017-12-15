@@ -1,6 +1,8 @@
 var utils = require('./utils');
 var inquirer = require("inquirer");
 var Table = require('cli-table');
+var fs = require('fs');
+var mkdirp = require('mkdirp');
 
 var c = utils.colors;
 
@@ -8,7 +10,7 @@ function Game() {
   this.inventory = {};
   this.score = 0;
   this.currentRoom = {};
-  this.keyWords = ['help', 'info', 'inventory', 'score', 'save', 'restore', 'throw', 'drop', 'take', 'pick', 'get', 'use', 'move', 'nothing'];
+  this.keyWords = ['help', 'info', 'inventory', 'score', 'save', 'restore', 'throw', 'drop', 'take', 'pick', 'get', 'use', 'move', 'nothing', 'test', 'current'];
 }
 
 Game.prototype.play = function(gsPath) { //Game Script Path
@@ -18,7 +20,7 @@ Game.prototype.play = function(gsPath) { //Game Script Path
 };
 
 Game.prototype.help = function() {
-  console.log('\n', c.blue('  This is text based adventure game inspired by Zork. You can find a set of commands below that will help you navigate around the game.', '\n'));
+  console.log('\n', c.blue(' This is text based adventure game inspired by Zork. You can find a set of commands below that will help you navigate around the game.', '\n'));
   console.log(c.green('  Rules of the road : '), '\n');
   console.log(('  *  You enter the below commands to progress the game '));
   console.log(('  *  A command is 2 word phrase consisting of a verb and an object/direction '));
@@ -32,7 +34,7 @@ Game.prototype.help = function() {
   });
 
   table.push(
-    [c.green('command'), c.green('description')], ['help', 'To see these instructions'], ['info', 'To see the help based on your game state'], ['inventory', 'You can see all the items you have collected here'], ['score', 'Your score based on how you are playing the game'], ['save', 'Save the game'], ['restore', 'Restore the game']
+    [c.green('command'), c.green('description')], ['help', 'To see these instructions'], ['info', 'To see the help based on your game state'], ['inventory', 'You can see all the items you have collected here'], ['score', 'Your score based on how you are playing the game'], ['current', 'Alias name of your current room'], ['test', 'print objects of Inventory, score and currentRoom'], ['save', 'Save the game'], ['restore', 'Restore the game']
   );
   console.log(table.toString(), '\n');
 }
@@ -139,6 +141,7 @@ Game.prototype.executer = function(room) {
         console.log(c.magenta(msgs[Math.ceil(Math.random() * msgs.length) - 1]), '\n');
       }
       self.executer(room);
+      console.log("test executer 2");
     }
   });
 }
@@ -200,6 +203,10 @@ Game.prototype.processKeyword = function(response, room, _r) {
     self.pick(_r, response.split(" ")[1]);
   } else if (response.split(" ")[0] == 'throw' || response.split(" ")[0] == 'drop') {
     self.throw(_r, response.split(" ")[1]);
+  } else if (response == 'test') {
+    self.test();
+  } else if (response == 'current') {
+    self.currentRoomName();
   } else {
     if (response.split(" ").length < 1 || response.split(" ").length > 1) {
       console.log('Enter a verb and a action. Enter `help` for more info');
@@ -232,6 +239,12 @@ Game.prototype.throw = function(room, item) {
   }
 };
 
+Game.prototype.test = function() {
+  console.log(this.inventory);
+  console.log(this.score);
+  console.log(this.currentRoom);
+}
+
 Game.prototype.printInventory = function() {
   var self = this;
   var items = Object.keys(self.inventory);
@@ -254,12 +267,52 @@ Game.prototype.printInventory = function() {
   console.log(table.toString(), '\n');
 };
 
+Game.prototype.currentRoomName = function() {
+  var self = this;
+  var current = self.currentRoom;
+  var currentName = current[Object.keys(current)[0]].alias;
+  console.log("Now, you are at: " + currentName);
+}
+
 Game.prototype.save = function() {
-  // save the game state
+
+  mkdirp('./save', function (err) {
+      if (err) console.error(err)
+      else console.log('pow!')
+  });
+
+  var saveData = new Object();
+  saveData.inventory = this.inventory;
+  saveData.score = this.score;
+  saveData.room = this.currentRoom;
+
+  var filename = "./save/save.JSON";
+    fs.writeFile(filename, JSON.stringify(saveData), function(err, data) {
+      if (err) throw err;
+      console.log('The game has been saved!');
+    });
 };
 
 Game.prototype.restore = function() {
-  // restore the game state
+  var self = this;
+  var filename = "./save/save.JSON";
+
+  delete self.inventory;
+  delete self.score;
+  self.currentRoom = "";
+  console.log(JSON.stringify(self.currentRoom));
+
+  fs.readFile(filename, 'utf8', function(err, data) {
+    var array = JSON.parse(data);
+    if (err) throw err;
+    self.inventory = array[Object.keys(array)[0]];
+    self.score = array[Object.keys(array)[1]];
+    self.currentRoom = array[Object.keys(array)[2]];
+    console.log('The game has been restored!');
+    var room = self.currentRoom;
+    var roomName = Object.keys(room)[0];
+    self.feeder(roomName);
+  });
 };
 
 module.exports = new Game();
